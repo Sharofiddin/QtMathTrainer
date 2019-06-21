@@ -8,15 +8,11 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-
-   int  initialNums []= { 12,13,23,45};
-   for(int i = 0; i < 4; i++){
-       this->nums.append(initialNums[i]);
-   }
    this->currentIndex = 0;
    this->sum = 0;
    timer =  new QTimer(this);
     ui->setupUi(this);
+    ui->radioButton->setChecked(true);
 
 }
 
@@ -73,4 +69,32 @@ void MainWindow::on_pushButton_2_clicked()
    connect(timer, SIGNAL(timeout()),this, SLOT(add_loaded_num()));
 //    connect(this,SIGNAL(number_loaded(int)),ui->lcdNumber,SLOT(display(int)));
 
+}
+
+void MainWindow::readNUmsFromFile()
+{
+    if(file->open(QIODevice::ReadOnly | QIODevice::Text)){
+        QTextStream stream(file);
+        while (!stream.atEnd()) {
+            this->nums.append(stream.readLine().toInt());
+        }
+    }
+}
+
+void MainWindow::on_radioButton_clicked()
+{
+    this->file = new QFile( "1.txt");
+    readNUmsFromFile();
+}
+
+void MainWindow::on_radioButton_2_clicked()
+{
+    this->file = new QFile( "2.txt");
+    readNUmsFromFile();
+}
+
+void MainWindow::on_radioButton_3_clicked()
+{
+    this->file = new QFile( "2.txt");
+    readNUmsFromFile();
 }
